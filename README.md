@@ -13,14 +13,17 @@ gm resize: gm convert input_image -auto-orient -strip -resize 600x900 -quality 7
 im sample: magick input_image -auto-orient -strip -sample 600x900 -quality 75 jpg:th
 im thumbnail: magick input_image -auto-orient -strip -thumbnail 600x900 -quality 75 jpg:th
 im resize: magick input_image -auto-orient -strip -resize 600x900 -quality 75 jpg:th
+
+* default in this plugin
+** default in Yazi
 ```
 ### AVIF
 | Test | Max RSS [MiB] | Mean [ms] | Min [ms] | Max [ms] | Relative |
 |:---|---:|---:|---:|---:|---:|
 | gm sample | 443 | 225.7 ± 1.2 | 224.2 | 228.1 | 1.00 |
-| gm thumbnail | 443 | 246.8 ± 6.2 | 237.9 | 257.5 | 1.09 ± 0.03 |
+| gm thumbnail* | 443 | 246.8 ± 6.2 | 237.9 | 257.5 | 1.09 ± 0.03 |
 | gm resize | 443 | 307.9 ± 3.7 | 302.5 | 312.0 | 1.36 ± 0.02 |
-| im sample | 588 | 256.3 ± 3.9 | 251.9 | 265.4 | 1.14 ± 0.02 |
+| im sample** | 588 | 256.3 ± 3.9 | 251.9 | 265.4 | 1.14 ± 0.02 |
 | im thumbnail | 588 | 281.0 ± 3.8 | 277.6 | 290.6 | 1.25 ± 0.02 |
 | im resize | 588 | 435.9 ± 6.7 | 427.1 | 450.7 | 1.93 ± 0.03 |
 
@@ -28,9 +31,9 @@ im resize: magick input_image -auto-orient -strip -resize 600x900 -quality 75 jp
 | Test | Max RSS [MiB] | Mean [ms] | Min [ms] | Max [ms] | Relative |
 |:---|---:|---:|---:|---:|---:|
 | gm sample | 501 | 765.7 ± 0.9 | 764.4 | 767.5 | 1.00 |
-| gm thumbnail | 501 | 782.9 ± 2.3 | 779.9 | 788.1 | 1.02 ± 0.00 |
+| gm thumbnail* | 501 | 782.9 ± 2.3 | 779.9 | 788.1 | 1.02 ± 0.00 |
 | gm resize | 501 | 844.6 ± 5.1 | 839.4 | 853.5 | 1.10 ± 0.01 |
-| im sample | 621 | 795.3 ± 1.5 | 792.5 | 798.4 | 1.04 ± 0.00 |
+| im sample** | 621 | 795.3 ± 1.5 | 792.5 | 798.4 | 1.04 ± 0.00 |
 | im thumbnail | 621 | 820.1 ± 3.3 | 814.6 | 825.2 | 1.07 ± 0.00 |
 | im resize | 621 | 977.3 ± 4.9 | 969.6 | 987.0 | 1.28 ± 0.01 |
 
@@ -38,9 +41,9 @@ im resize: magick input_image -auto-orient -strip -resize 600x900 -quality 75 jp
 | Test | Max RSS [MiB] | Mean [ms] | Min [ms] | Max [ms] | Relative |
 |:---|---:|---:|---:|---:|---:|
 | gm sample | 566 | 244.9 ± 11.1 | 229.9 | 267.6 | 1.02 ± 0.05 |
-| gm thumbnail | 566 | 261.5 ± 8.1 | 250.5 | 271.1 | 1.09 ± 0.04 |
+| gm thumbnail* | 566 | 261.5 ± 8.1 | 250.5 | 271.1 | 1.09 ± 0.04 |
 | gm resize | 566 | 319.9 ± 8.3 | 306.0 | 330.4 | 1.34 ± 0.05 |
-| im sample | 715 | 239.2 ± 5.7 | 230.9 | 248.7 | 1.00 |
+| im sample** | 715 | 239.2 ± 5.7 | 230.9 | 248.7 | 1.00 |
 | im thumbnail | 715 | 266.2 ± 5.7 | 260.4 | 276.7 | 1.11 ± 0.04 |
 | im resize | 715 | 423.5 ± 6.8 | 413.9 | 436.5 | 1.77 ± 0.05 |
 
