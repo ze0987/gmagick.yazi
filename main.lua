@@ -35,7 +35,7 @@ function M:preload(job)
 		tostring(job.file.url), "-auto-orient", "-strip",
 		"-thumbnail", string.format("%dx%d", rt.preview.max_width, rt.preview.max_height),
 		"-quality", rt.preview.image_quality,
-        string.format("jpg:%s", cache),
+		string.format("jpg:%s", cache),
 	}:status()
 
 	if status then
@@ -49,7 +49,7 @@ function M:spot(job) require("file"):spot(job) end
 
 function M.with_limit()
 	local cmd = Command("gm"):arg { "convert" }
-    local img_bound = rt.tasks.image_bound[1] * rt.tasks.image_bound[2]
+	local img_bound = rt.tasks.image_bound[1] * rt.tasks.image_bound[2]
 	if rt.tasks.image_alloc > 0 then
 		cmd:arg { "-limit", "Memory", rt.tasks.image_alloc, "-limit", "Disk", "1MB" }
 	end
