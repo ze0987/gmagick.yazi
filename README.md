@@ -60,7 +60,7 @@ ya pkg add 'ze0987/gmagick'
 
 ## Usage
 
-Add the following to your `yazi.toml`:
+Add the following to your `yazi.toml`. Extend the list of MIME types as you see fit. The complete list of supported formats is available [here](http://www.graphicsmagick.org/formats.html).
 
 ```toml
 [plugin]
