@@ -32,6 +32,7 @@ function M:preload(job)
 
 	-- stylua: ignore
 	local status, err = cmd:arg {
+		-- "-limit" , "threads", 1,
 		tostring(job.file.url), "-auto-orient", "-strip",
 		"-thumbnail", string.format("%dx%d", rt.preview.max_width, rt.preview.max_height),
 		"-quality", rt.preview.image_quality,
