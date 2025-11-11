@@ -1,8 +1,33 @@
 # gmagick.yazi
 
-An alternative, slightly modified [image preview](https://github.com/sxyazi/yazi/blob/main/yazi-plugin/preset/plugins/magick.lua) plugin for [yazi](https://github.com/sxyazi/yazi) that uses [GraphicsMagick](http://www.graphicsmagick.org/) instead of [ImageMagick](https://imagemagick.org/). Depending on the format and size of the image, GraphicsMagick can be significantly faster or slightly slower than ImageMagick; requires less RAM. This plugin does not limit the number of threads by default; rather, it sets the maximum number offered by the processor on which it is running. While this significantly speeds up the generation of JPEG-XL file previews with preloaders disabled, it is not optimal with the default Yazi settings, where up to 10 thumbnail generation processes run in parallel. I encourage you to uncomment `-- "-limit" , "threads", 1,` and adjust the thread limit as needed.
+Alternative [image preview](https://github.com/sxyazi/yazi/blob/main/yazi-plugin/preset/plugins/magick.lua) plugin for [yazi](https://github.com/sxyazi/yazi) that uses [GraphicsMagick](http://www.graphicsmagick.org/) instead of [ImageMagick](https://imagemagick.org/). Depending on the format, image size or CPU, GraphicsMagick can be faster or slower than ImageMagick; usually requires less RAM. This plugin does not limit the number of threads by default; rather, it sets the maximum number offered by the processor on which it is running. While this significantly speeds up the generation of JPEG-XL file previews with preloaders disabled, it is not optimal with the default Yazi settings, where up to 10 thumbnail generation processes run in parallel. I encourage you to uncomment `-- "-limit" , "threads", 1,` and adjust the thread limit as needed.
 
-## Benchmarks
+## Requirements
+
+- `graphicsmagick`
+
+## Installation
+
+```sh
+ya pkg add 'ze0987/gmagick'
+```
+
+## Usage
+
+Add the following to your `yazi.toml`. Extend the list of MIME types as you see fit. The complete list of supported formats is available [here](http://www.graphicsmagick.org/formats.html).
+
+```toml
+[plugin]
+prepend_previewers = [
+  { mime = "image/{avif,hei?,jxl}", run = "gmagick" },
+]
+
+prepend_preloaders = [
+{ mime = "image/{avif,hei?,jxl}", run = "gmagick" },
+]
+```
+
+## x86 Benchmarks
 ```
 CPU: Intel 13th gen 6 P-Cores w/ SMT, 8 E-Cores
 ImageMagick version: 7.1.2-8
@@ -194,28 +219,122 @@ ImageMagick command : magick input_image -auto-orient -thumbnail 600x900 -qualit
 
 \* default in Yazi
 
-## Requirements
-
-- `graphicsmagick`
-
-## Installation
-
-```sh
-ya pkg add 'ze0987/gmagick'
+## aarch64 Benchmarks
 ```
+CPU: M1 4 P-Core / 4 E-Core
+ImageMagick version: 7.1.2-8
+GraphicsMagick version: 1.3.46
+GraphicsMagick command: gm convert input_image -auto-orient -thumbnail 600x900 -quality 75 jpg:th
+ImageMagick command : magick input_image -auto-orient -thumbnail 600x900 -quality 75 jpg:th
 
-## Usage
-
-Add the following to your `yazi.toml`. Extend the list of MIME types as you see fit. The complete list of supported formats is available [here](http://www.graphicsmagick.org/formats.html).
-
-```toml
-[plugin]
-prepend_previewers = [
-  { mime = "image/{avif,hei?,jxl}", run = "gmagick" },
-]
-
-prepend_preloaders = [
-{ mime = "image/{avif,hei?,jxl}", run = "gmagick" },
-]
 ```
+### Small file (700 x 875 px)
+#### JXL
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| GraphicsMagick - 4t | 15.6 ± 0.2 | 15.4 | 15.9 | 1.00 ||
+| GraphicsMagick - 7t | 15.7 ± 0.1 | 15.4 | 15.9 | 1.00 ± 0.01 ||
+| GraphicsMagick - 6t | 15.7 ± 0.2 | 15.4 | 16.2 | 1.00 ± 0.02 ||
+| GraphicsMagick - 5t | 15.7 ± 0.2 | 15.5 | 16.0 | 1.01 ± 0.02 ||
+| GraphicsMagick - 8t | 15.8 ± 0.3 | 15.4 | 16.6 | 1.01 ± 0.02 | 24848 |
+| GraphicsMagick - 3t | 16.0 ± 0.2 | 15.8 | 16.5 | 1.02 ± 0.02 ||
+| GraphicsMagick - 2t | 16.7 ± 0.2 | 16.3 | 17.1 | 1.07 ± 0.02 ||
+| GraphicsMagick - 1t | 19.0 ± 0.4 | 18.4 | 19.9 | 1.21 ± 0.03 | 20640 |
+| ImageMagick - 4t | 39.5 ± 0.1 | 39.4 | 39.8 | 2.53 ± 0.03 ||
+| ImageMagick - 7t | 39.5 ± 0.2 | 39.3 | 39.8 | 2.53 ± 0.03 ||
+| ImageMagick - 8t | 39.6 ± 0.2 | 39.2 | 40.0 | 2.53 ± 0.03 | 38144 |
+| ImageMagick - 5t | 39.7 ± 0.4 | 39.3 | 40.8 | 2.54 ± 0.04 ||
+| ImageMagick - 6t | 39.8 ± 0.6 | 39.3 | 41.5 | 2.55 ± 0.05 ||
+| ImageMagick - 3t | 40.0 ± 0.3 | 39.6 | 40.7 | 2.56 ± 0.04 ||
+| ImageMagick - 2t | 40.8 ± 0.5 | 40.4 | 42.0 | 2.61 ± 0.04 ||
+| ImageMagick - 1t | 42.7 ± 0.2 | 42.4 | 43.1 | 2.74 ± 0.03 | 33696 |
 
+#### AFIV
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| GraphicsMagick - 1t  | 29.0 ± 0.2 | 28.7 | 29.3 | 1.00 | 25024 |
+| GraphicsMagick - 8t  | 29.1 ± 0.2 | 28.8 | 29.4 | 1.00 ± 0.01 | 25088 |
+| ImageMagick - 8t  | 54.0 ± 0.2 | 53.7 | 54.2 | 1.86 ± 0.01 | 37616 |
+| ImageMagick - 1t  | 54.0 ± 0.2 | 53.8 | 54.4 | 1.87 ± 0.02 | 37664 |
+
+#### HEIC
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| GraphicsMagick - 8t | 39.8 ± 0.1 | 39.7 | 40.1 | 1.00 | 21152 |
+| GraphicsMagick - 1t | 39.9 ± 0.1 | 39.7 | 40.0 | 1.00 ± 0.00 | 20880 |
+| ImageMagick - 1t | 64.8 ± 0.1 | 64.5 | 65.0 | 1.63 ± 0.01 | 34496 | 
+| ImageMagick - 8t | 64.8 ± 0.2 | 64.5 | 65.1 | 1.63 ± 0.01 | 34480 |
+
+### Medium file (4271 x 5697 px)
+#### JXL
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| GraphicsMagick - 8t | 255.9 ± 0.7 | 255.2 | 256.8 | 1.00 | 442944 |
+| GraphicsMagick - 7t | 263.2 ± 2.0 | 261.8 | 266.8 | 1.03 ± 0.01 ||
+| GraphicsMagick - 6t | 269.7 ± 1.1 | 268.8 | 271.1 | 1.05 ± 0.01 ||
+| GraphicsMagick - 5t | 279.2 ± 1.6 | 277.8 | 281.4 | 1.09 ± 0.01 ||
+| GraphicsMagick - 4t | 291.5 ± 1.7 | 289.9 | 294.2 | 1.14 ± 0.01 ||
+| GraphicsMagick - 3t | 336.1 ± 0.6 | 335.3 | 336.7 | 1.31 ± 0.00 ||
+| ImageMagick - 8t | 344.1 ± 1.4 | 342.6 | 345.7 | 1.34 ± 0.01 | 554032 |
+| ImageMagick - 7t | 353.0 ± 4.0 | 349.4 | 357.7 | 1.38 ± 0.02 ||
+| ImageMagick - 6t | 387.9 ± 2.9 | 385.4 | 392.3 | 1.52 ± 0.01 ||
+| ImageMagick - 5t | 398.3 ± 3.4 | 394.6 | 402.7 | 1.56 ± 0.01 ||
+| ImageMagick - 4t | 410.7 ± 3.0 | 407.9 | 414.2 | 1.60 ± 0.01 ||
+| GraphicsMagick - 2t | 419.7 ± 1.4 | 418.6 | 422.1 | 1.64 ± 0.01 ||
+| ImageMagick - 3t | 455.5 ± 2.0 | 453.4 | 457.7 | 1.78 ± 0.01 ||
+| ImageMagick - 2t | 539.6 ± 3.2 | 535.5 | 543.6 | 2.11 ± 0.01 ||
+| GraphicsMagick - 1t | 663.2 ± 1.7 | 661.0 | 664.9 | 2.59 ± 0.01 | 437984 |
+| ImageMagick - 1t | 783.6 ± 3.2 | 779.3 | 786.6 | 3.06 ± 0.01 | 550400 |
+
+#### AVIF
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| ImageMagick - 8t  | 720.7 ± 3.8 | 718.3 | 727.2 | 1.00 | 833456 |
+| ImageMagick - 1t  | 747.7 ± 0.7 | 746.7 | 748.7 | 1.04 ± 0.01 | 833392 |
+| GraphicsMagick - 8t  | 759.7 ± 1.6 | 757.5 | 761.3 | 1.05 ± 0.01 | 524176 |
+| GraphicsMagick - 1t  | 760.1 ± 1.8 | 758.5 | 762.9 | 1.05 ± 0.01 | 524176 |
+
+#### HEIC
+| Command | Mean [s] | Min [s] | Max [s] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| ImageMagick - 8t | 1.396 ± 0.001 | 1.396 | 1.397 | 1.00 | 576944 |
+| ImageMagick - 1t | 1.425 ± 0.001 | 1.424 | 1.425 | 1.02 ± 0.00 | 576800 |
+| GraphicsMagick - 1t | 1.451 ± 0.000 | 1.451 | 1.452 | 1.04 ± 0.00 | 450096 |
+| GraphicsMagick - 8t | 1.452 ± 0.001 | 1.450 | 1.453 | 1.04 ± 0.00 | 450080 |
+
+### Big File (14105 x 21358 px)
+#### JXL
+| Command | Mean [s] | Min [s] | Max [s] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| ImageMagick - 8t | 1.994 ± 0.009 | 1.984 | 2.007 | 1.00 | 5103232 ||
+| ImageMagick - 7t | 2.054 ± 0.005 | 2.050 | 2.062 | 1.03 ± 0.01 ||
+| GraphicsMagick - 8t | 2.065 ± 0.008 | 2.056 | 2.075 | 1.04 ± 0.01 | 3914752 |
+| GraphicsMagick - 7t | 2.123 ± 0.002 | 2.121 | 2.126 | 1.06 ± 0.00 ||
+| ImageMagick - 6t | 2.139 ± 0.005 | 2.134 | 2.147 | 1.07 ± 0.01 ||
+| GraphicsMagick - 6t | 2.188 ± 0.003 | 2.185 | 2.190 | 1.10 ± 0.00 ||
+| ImageMagick - 5t | 2.273 ± 0.005 | 2.266 | 2.278 | 1.14 ± 0.01 ||
+| GraphicsMagick - 5t | 2.275 ± 0.002 | 2.272 | 2.277 | 1.14 ± 0.01 ||
+| GraphicsMagick - 4t | 2.387 ± 0.003 | 2.382 | 2.390 | 1.20 ± 0.01 ||
+| ImageMagick - 4t | 2.428 ± 0.007 | 2.417 | 2.434 | 1.22 ± 0.01 ||
+| GraphicsMagick - 3t | 2.832 ± 0.003 | 2.827 | 2.835 | 1.42 ± 0.01 ||
+| ImageMagick - 3t | 2.895 ± 0.003 | 2.890 | 2.899 | 1.45 ± 0.01 ||
+| GraphicsMagick - 2t | 3.665 ± 0.005 | 3.658 | 3.672 | 1.84 ± 0.01 ||
+| ImageMagick - 2t | 3.800 ± 0.006 | 3.790 | 3.806 | 1.91 ± 0.01 ||
+| GraphicsMagick - 1t | 6.143 ± 0.011 | 6.128 | 6.155 | 3.08 ± 0.01 | 3905984 |
+| ImageMagick - 1t | 6.385 ± 0.006 | 6.377 | 6.393 | 3.20 ± 0.01 | 5093664 |
+
+#### AVIF
+| Command | Mean [s] | Min [s] | Max [s] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| ImageMagick - 8t  | 2.493 ± 0.004 | 2.487 | 2.496 | 1.00 | 8848800 |
+| ImageMagick - 1t  | 2.568 ± 0.023 | 2.543 | 2.592 | 1.03 ± 0.01 | 7418528 |
+| GraphicsMagick - 8t  | 3.625 ± 0.007 | 3.617 | 3.633 | 1.45 ± 0.00 | 5015536 |
+| GraphicsMagick - 1t  | 3.625 ± 0.006 | 3.617 | 3.632 | 1.45 ± 0.00 | 5015536 |
+
+#### HEIC
+| Command | Mean [s] | Min [s] | Max [s] | Relative | Max RSS (kbytes) |
+|:---|---:|---:|---:|---:|---:|
+| ImageMagick - 8t | 5.350 ± 0.001 | 5.348 | 5.351 | 1.00 | 5624272 |
+| ImageMagick - 1t | 5.390 ± 0.004 | 5.386 | 5.396 | 1.01 ± 0.00 | 5624032 |
+| GraphicsMagick - 1t | 6.938 ± 0.004 | 6.933 | 6.942 | 1.30 ± 0.00 | 4149632 |
+| GraphicsMagick - 8t | 6.938 ± 0.002 | 6.936 | 6.940 | 1.30 ± 0.00 | 4149680 |
