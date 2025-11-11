@@ -247,7 +247,7 @@ ImageMagick command : magick input_image -auto-orient -thumbnail 600x900 -qualit
 | ImageMagick - 6t | 39.8 ± 0.6 | 39.3 | 41.5 | 2.55 ± 0.05 ||
 | ImageMagick - 3t | 40.0 ± 0.3 | 39.6 | 40.7 | 2.56 ± 0.04 ||
 | ImageMagick - 2t | 40.8 ± 0.5 | 40.4 | 42.0 | 2.61 ± 0.04 ||
-| ImageMagick - 1t | 42.7 ± 0.2 | 42.4 | 43.1 | 2.74 ± 0.03 | 33696 |
+| ImageMagick - 1t* | 42.7 ± 0.2 | 42.4 | 43.1 | 2.74 ± 0.03 | 33696 |
 
 #### AFIV
 | Command | Mean [ms] | Min [ms] | Max [ms] | Relative | Max RSS (kbytes) |
@@ -255,14 +255,14 @@ ImageMagick command : magick input_image -auto-orient -thumbnail 600x900 -qualit
 | GraphicsMagick - 1t  | 29.0 ± 0.2 | 28.7 | 29.3 | 1.00 | 25024 |
 | GraphicsMagick - 8t  | 29.1 ± 0.2 | 28.8 | 29.4 | 1.00 ± 0.01 | 25088 |
 | ImageMagick - 8t  | 54.0 ± 0.2 | 53.7 | 54.2 | 1.86 ± 0.01 | 37616 |
-| ImageMagick - 1t  | 54.0 ± 0.2 | 53.8 | 54.4 | 1.87 ± 0.02 | 37664 |
+| ImageMagick - 1t*  | 54.0 ± 0.2 | 53.8 | 54.4 | 1.87 ± 0.02 | 37664 |
 
 #### HEIC
 | Command | Mean [ms] | Min [ms] | Max [ms] | Relative | Max RSS (kbytes) |
 |:---|---:|---:|---:|---:|---:|
 | GraphicsMagick - 8t | 39.8 ± 0.1 | 39.7 | 40.1 | 1.00 | 21152 |
 | GraphicsMagick - 1t | 39.9 ± 0.1 | 39.7 | 40.0 | 1.00 ± 0.00 | 20880 |
-| ImageMagick - 1t | 64.8 ± 0.1 | 64.5 | 65.0 | 1.63 ± 0.01 | 34496 | 
+| ImageMagick - 1t* | 64.8 ± 0.1 | 64.5 | 65.0 | 1.63 ± 0.01 | 34496 | 
 | ImageMagick - 8t | 64.8 ± 0.2 | 64.5 | 65.1 | 1.63 ± 0.01 | 34480 |
 
 ### Medium file (4271 x 5697 px)
@@ -284,13 +284,13 @@ ImageMagick command : magick input_image -auto-orient -thumbnail 600x900 -qualit
 | ImageMagick - 3t | 455.5 ± 2.0 | 453.4 | 457.7 | 1.78 ± 0.01 ||
 | ImageMagick - 2t | 539.6 ± 3.2 | 535.5 | 543.6 | 2.11 ± 0.01 ||
 | GraphicsMagick - 1t | 663.2 ± 1.7 | 661.0 | 664.9 | 2.59 ± 0.01 | 437984 |
-| ImageMagick - 1t | 783.6 ± 3.2 | 779.3 | 786.6 | 3.06 ± 0.01 | 550400 |
+| ImageMagick - 1t* | 783.6 ± 3.2 | 779.3 | 786.6 | 3.06 ± 0.01 | 550400 |
 
 #### AVIF
 | Command | Mean [ms] | Min [ms] | Max [ms] | Relative | Max RSS (kbytes) |
 |:---|---:|---:|---:|---:|---:|
 | ImageMagick - 8t  | 720.7 ± 3.8 | 718.3 | 727.2 | 1.00 | 833456 |
-| ImageMagick - 1t  | 747.7 ± 0.7 | 746.7 | 748.7 | 1.04 ± 0.01 | 833392 |
+| ImageMagick - 1t*  | 747.7 ± 0.7 | 746.7 | 748.7 | 1.04 ± 0.01 | 833392 |
 | GraphicsMagick - 8t  | 759.7 ± 1.6 | 757.5 | 761.3 | 1.05 ± 0.01 | 524176 |
 | GraphicsMagick - 1t  | 760.1 ± 1.8 | 758.5 | 762.9 | 1.05 ± 0.01 | 524176 |
 
@@ -298,7 +298,7 @@ ImageMagick command : magick input_image -auto-orient -thumbnail 600x900 -qualit
 | Command | Mean [s] | Min [s] | Max [s] | Relative | Max RSS (kbytes) |
 |:---|---:|---:|---:|---:|---:|
 | ImageMagick - 8t | 1.396 ± 0.001 | 1.396 | 1.397 | 1.00 | 576944 |
-| ImageMagick - 1t | 1.425 ± 0.001 | 1.424 | 1.425 | 1.02 ± 0.00 | 576800 |
+| ImageMagick - 1t* | 1.425 ± 0.001 | 1.424 | 1.425 | 1.02 ± 0.00 | 576800 |
 | GraphicsMagick - 1t | 1.451 ± 0.000 | 1.451 | 1.452 | 1.04 ± 0.00 | 450096 |
 | GraphicsMagick - 8t | 1.452 ± 0.001 | 1.450 | 1.453 | 1.04 ± 0.00 | 450080 |
 
@@ -321,20 +321,22 @@ ImageMagick command : magick input_image -auto-orient -thumbnail 600x900 -qualit
 | GraphicsMagick - 2t | 3.665 ± 0.005 | 3.658 | 3.672 | 1.84 ± 0.01 ||
 | ImageMagick - 2t | 3.800 ± 0.006 | 3.790 | 3.806 | 1.91 ± 0.01 ||
 | GraphicsMagick - 1t | 6.143 ± 0.011 | 6.128 | 6.155 | 3.08 ± 0.01 | 3905984 |
-| ImageMagick - 1t | 6.385 ± 0.006 | 6.377 | 6.393 | 3.20 ± 0.01 | 5093664 |
+| ImageMagick - 1t* | 6.385 ± 0.006 | 6.377 | 6.393 | 3.20 ± 0.01 | 5093664 |
 
 #### AVIF
 | Command | Mean [s] | Min [s] | Max [s] | Relative | Max RSS (kbytes) |
 |:---|---:|---:|---:|---:|---:|
 | ImageMagick - 8t  | 2.493 ± 0.004 | 2.487 | 2.496 | 1.00 | 8848800 |
-| ImageMagick - 1t  | 2.568 ± 0.023 | 2.543 | 2.592 | 1.03 ± 0.01 | 7418528 |
-| GraphicsMagick - 8t  | 3.625 ± 0.007 | 3.617 | 3.633 | 1.45 ± 0.00 | 5015536 |
+| ImageMagick - 1t*  | 2.568 ± 0.023 | 2.543 | 2.592 | 1.03 ± 0.01 | 7418528 |
+| GraphicsMagick - 8t  | 3.625 ± 0.007 | 3.617 | 3.633 | 1.45 ± 0.00 | 5015600 |
 | GraphicsMagick - 1t  | 3.625 ± 0.006 | 3.617 | 3.632 | 1.45 ± 0.00 | 5015536 |
 
 #### HEIC
 | Command | Mean [s] | Min [s] | Max [s] | Relative | Max RSS (kbytes) |
 |:---|---:|---:|---:|---:|---:|
 | ImageMagick - 8t | 5.350 ± 0.001 | 5.348 | 5.351 | 1.00 | 5624272 |
-| ImageMagick - 1t | 5.390 ± 0.004 | 5.386 | 5.396 | 1.01 ± 0.00 | 5624032 |
+| ImageMagick - 1t* | 5.390 ± 0.004 | 5.386 | 5.396 | 1.01 ± 0.00 | 5624032 |
 | GraphicsMagick - 1t | 6.938 ± 0.004 | 6.933 | 6.942 | 1.30 ± 0.00 | 4149632 |
 | GraphicsMagick - 8t | 6.938 ± 0.002 | 6.936 | 6.940 | 1.30 ± 0.00 | 4149680 |
+
+\* default in Yazi
