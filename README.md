@@ -23,7 +23,7 @@ prepend_previewers = [
 ]
 
 prepend_preloaders = [
-{ mime = "image/{avif,hei?,jxl}", run = "gmagick" },
+  { mime = "image/{avif,hei?,jxl}", run = "gmagick" },
 ]
 ```
 
